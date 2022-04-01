@@ -71,7 +71,7 @@ final class TOTP extends OTP implements TOTPInterface
             return $this->compareOTP($this->at($timestamp), $otp);
         }
 
-        return $this->verifyOtpWithWindow($otp, $timestamp, $window);
+        return $this->verifyOtpWithWindow($otp, $timestamp, $window) != null;
     }
 
     public function verifyOtpWithWindow(string $otp, int $timestamp, int $window, ?int $after = null): ?int
