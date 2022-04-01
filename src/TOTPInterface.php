@@ -25,8 +25,8 @@ interface TOTPInterface extends OTPInterface
     /**
      * Verify that the OTP is valid with the specified input.
      * 
-     * Optionally accepts a timestamp after which a otp is accepted to prevent token reuse
-     * Returns the last successful timestamp if valid or null if not valid
+     * To prevent token reuse, pass the timestamp of the last correctly verified OTP code as $after
+     * Returns false if the verification failed, otherwise returns the timestamp associated with the correct code.
      */
     public function verifyOtpWithWindow(string $otp, int $timestamp, int $window, ?int $after = null): ?int;
 
