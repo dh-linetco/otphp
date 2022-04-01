@@ -5,13 +5,17 @@ This can be used to prevent token reuse by keeping track of the last time a uses
 of the verified code if its valid and null otherwise.
 
 ```php
-$user->lastSuccessfulOtpLogin = null;
+# Load the timestamp of the last successful otp login from storage e.g. a database
+$lastSuccessfulOtpLogin = getLastSucessfulOtpLoginFromStorage();
 
-$lastOtpAt = $totp->verifyOtpWithWindow('123456', null, null, $user->lastSuccessfulOtpLogin); # will return the timestamp 
+$lastOtpAt = $totp->verifyOtpWithWindow('123456', null, null, $lastSuccessfulOtpLogin); # will return the timestamp 
+if ($lastOtpAt != null) {
+    # otp is valid
+    saveLastSuccessfulOtpLoginInStorage($lastOtpAt);
+} else {
+    # otp is invalid
+}
 
-$user->lastSuccessfulOtpLogin = $lastOtpAt;
-$user->save();
-
-# Attempting to try the same code again inside the 30s period
-$lastOtpAt = $totp->verifyOtpWithWindow('123456', null, null, $user->lastSuccessfulOtpLogin); # will return null
+# Attempting to try the same code again inside the 30s period 
+$lastOtpAt = $totp->verifyOtpWithWindow('123456', null, null, $lastSuccessfulOtpLogin); # will return null
 ```
