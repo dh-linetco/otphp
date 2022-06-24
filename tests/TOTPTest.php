@@ -205,10 +205,10 @@ final class TOTPTest extends TestCase
         $successfulTimestamp = $otp->verifyOtpWithWindow($validOtp, $now, 0, $successfulTimestamp);
         static::assertNull($successfulTimestamp);
 
-        $timestampAfter30S = $now + 30;
-        $validOtpAfter30S = $otp->at($timestampAfter30S);
-        $successfulTimestamp = $otp->verifyOtpWithWindow($validOtpAfter30S, $timestampAfter30S, 0, $successfulTimestamp);
-        static::assertEquals($timestampAfter30S, $successfulTimestamp);
+        $timestampOfNextPeriod = $now + $otp->getPeriod();
+        $validOtpOfNextPeriod = $otp->at($timestampOfNextPeriod);
+        $successfulTimestamp = $otp->verifyOtpWithWindow($validOtpOfNextPeriod, $timestampOfNextPeriod, 0, $successfulTimestamp);
+        static::assertEquals($timestampOfNextPeriod, $successfulTimestamp);
     }
 
     /**
